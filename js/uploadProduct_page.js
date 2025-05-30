@@ -471,47 +471,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         alert(`商品 "${result.product.name}" 儲存成功！`);
                         closeModal();
                         
-                        // 更新模型資訊，使用GridFS服務URL
-                        if (result.product.model_url) {
-                            currentModelInfo.url = result.product.model_url;
-                            currentModelInfo.model_file_id = result.product.model_file_id;
-                            
-                            // 更新模型查看器的源
-                            modelViewer.src = currentModelInfo.url;
-                            
-                            if (CONFIG.debug) {
-                                console.log('模型已更新為GridFS服務:', {
-                                    model_file_id: currentModelInfo.model_file_id,
-                                    model_url: currentModelInfo.url
-                                });
-                            }
-                        }
+                        // 刷新頁面
+                        window.location.reload();
                         
-                        // 成功上傳後詢問是否清空表單
-                        if (confirm('是否要清空表單以上傳新商品？')) {
-                            // 清空表單
-                            document.getElementById('productName').value = '';
-                            if (document.getElementById('textPrompt')) {
-                                document.getElementById('textPrompt').value = '';
-                            }
-                            selectedFiles = [];
-                            imagePreviewContainer.innerHTML = '<p>未選擇任何圖片。</p>';
-                            productImagesInput.value = null;
-                            
-                            // 清空結果
-                            clearResults();
-                            
-                            // 重置當前模型信息
-                            currentModelInfo = null;
-                            
-                            // 在移動設備上滾動回表單頂部
-                            if (window.innerWidth <= 768) {
-                                document.querySelector('.upload-form-section').scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }
-                        }
                     } else {
                         throw new Error(result.message || '儲存商品失敗');
                     }
