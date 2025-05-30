@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主頁面</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* 產品列表樣式覆蓋 */
+        #product-list-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important; /* 最多3個一排的網格佈局 */
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px; /* 限制最大寬度，確保在大螢幕上不會超過3個 */
+            margin: 0 auto; /* 水平居中 */
+        }
+
+        /* 在較小的螢幕上調整為2個一排 */
+        @media (max-width: 900px) {
+            #product-list-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+
+        /* 在更小的螢幕上調整為1個一排 */
+        @media (max-width: 600px) {
+            #product-list-container {
+                grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            }
+        }
+    </style>
+
+    <script src="../php/config-js.php"></script>
+    <script src="../js/nav.js"></script>
+    <script src="../js/get_user_profile.js"></script>
+</head>
+<body>
+    <header>
+        <h1>主頁面</h1>
+        <nav>
+            <a href="#">首頁</a>
+            <div class="dropdown">
+                <button class="dropbtn">管理</button>
+                <div class="dropdown-content">
+                    <a href="#" id="manageUsersLink">管理用戶</a>
+                    <a href="#" id="manageProductsLink">管理商品</a>
+                    <a href="../web/uploadProduct_page.html" id="uploadProductLink">上傳商品</a>
+                    <a href="login.html" id="logoutLink">登出</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div id="product-list-container"> <!-- 產品列表會動態插入 -->
+        </div>
+    </main>
+    <footer>
+    </footer>
+    
+    <!-- 主腳本放在最後加載 -->
+    <script src="../js/script.js"></script>
+</body>
+</html>

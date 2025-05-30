@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #CAC6BD; /* 淺灰褐色背景 - 與主頁一致 */
+    color: #333;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #B5A8A0; /* 暖灰褐色頁首背景 - 與主頁一致 */
+    color: #FFFFFF;
+    padding: 0.8rem 1rem; /* 調整padding */
+    text-align: center;
+    border-bottom: 3px solid #979D6E; /* 橄欖綠邊框 - 與主頁一致 */
+    position: relative; /* 為了返回按鈕定位 */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem; /* 調整標題大小 */
+}
+
+.back-button {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 8px 12px;
+    background-color: #979D6E;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #808A56;
+}
+
+main {
+    flex-grow: 1; /* 讓main填滿剩餘空間 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#model-viewer-container {
+    width: 90%;
+    max-width: 800px; /* 最大寬度 */
+    height: 70vh; /* 高度佔可視區域的70% */
+    min-height: 400px; /* 最小高度 */
+    background-color: #FFFFFF; /* 白色背景 */
+    border: 1px solid #B5A8A0; /* 暖灰褐色邊框 */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+model-viewer {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px; /* 配合容器 */
+    --progress-bar-color: #979D6E; /* 進度條顏色 */
+    --progress-bar-height: 4px;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #B5A8A0; /* 暖灰褐色頁尾背景 - 與主頁一致 */
+    color: #FFFFFF;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* model-viewer progress bar styling */
+.progress-bar {
+    display: block;
+    width: 100%;
+    height: var(--progress-bar-height, 4px);
+    background-color: #eee;
+    position: absolute;
+    bottom: 0;
+    left:0;
+}
+
+.progress-bar.hide {
+    display: none;
+}
+
+.update-bar {
+    width: 0%;
+    height: 100%;
+    background-color: var(--progress-bar-color, #03A9F4);
+    transition: width 0.3s ease-out;
+} 

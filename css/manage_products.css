@@ -1,0 +1,514 @@
+/* 產品管理頁面樣式 */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.page-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+/* 載入狀態 */
+.loading-container {
+    text-align: center;
+    padding: 40px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 商品容器 */
+.products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* 商品卡片 - 條列式 */
+.product-card {
+    background: #FFFFFF; /* 白色背景，與 style.css 中的 .product-item 一致 */
+    border-radius: 8px; /* 與 style.css 中的 .product-item 一致 */
+    border: 1px solid #B5A8A0; /* 暖灰褐色邊框，與 style.css 中的 .product-item 一致 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 與 style.css 中的 .product-item 一致 */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px; /* 增加卡片間距 */
+}
+
+.product-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 稍微調整 hover 效果 */
+}
+
+/* 商品圖片 */
+.product-image {
+    position: relative;
+    width: 120px; /* 增加圖片尺寸 */
+    height: 120px; /* 增加圖片尺寸 */
+    overflow: hidden;
+    border-radius: 8px;
+    flex-shrink: 0;
+    margin-right: 5px; /* 增加與資訊區塊的間距 */
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 模型標誌 */
+.model-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.model-badge.has-model {
+    background: #28a745;
+    color: white;
+}
+
+.model-badge.no-model {
+    background: #6c757d;
+    color: white;
+}
+
+/* 商品資訊 */
+.product-info {
+    padding: 0 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-name {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem; /* 調整字體大小 */
+    font-weight: 600;
+    color: #979D6E; /* 橄欖綠標題，與 style.css 中的 .product-item h3 一致 */
+    line-height: 1.3;
+}
+
+.product-price {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem; /* 調整字體大小 */
+    font-weight: bold;
+    color: #979D6E; /* 橄欖綠價格，與 style.css 中的 .product-price 一致 */
+}
+
+.product-category {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #666;
+    background: #f8f9fa;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.product-size {
+    margin: 0 0 8px 0;
+    font-size: 0.9rem; /* 調整字體大小 */
+    color: #BB9A88; /* 柔和棕褐色文字，與 style.css 中的 .product-item p 一致 */
+}
+
+.product-meta {
+    display: none;
+}
+
+/* 商品動作 */
+.product-actions {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-right: 10px;
+    min-width: 120px; /* 確保按鈕區域有足夠寬度 */
+}
+
+.product-actions button {
+    min-width: 100px;
+    padding: 10px 12px; /* 增加按鈕高度 */
+    border: none;
+    border-radius: 4px; /* 與 style.css 中的 .product-links a 一致 */
+    font-size: 0.9rem; /* 調整字體大小 */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    white-space: nowrap;
+    color: white; /* 預設文字顏色為白色 */
+    font-weight: 500; /* 稍微加粗文字 */
+    text-align: center;
+}
+
+.product-actions button:hover {
+    transform: translateY(-2px); /* 懸停時輕微上移效果 */
+}
+
+.product-actions button:active {
+    transform: translateY(1px); /* 點擊時輕微下移效果 */
+}
+
+.btn-main { /* 這個 class 在目前卡片中未使用，但保留以供未來使用 */
+    background: #979D6E; /* 橄欖綠 */
+    color: white;
+}
+
+.btn-main:hover {
+    background: #808A56; /* 橄欖綠加深 */
+}
+
+.btn-secondary { /* 用於編輯按鈕 */
+    background: #B5A8A0; /* 暖灰褐色 */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #A0938B; /* 暖灰褐色加深 */
+}
+
+.btn-danger { /* 用於刪除按鈕 */
+    background: #C85C5C; /* 較柔和的紅色 */
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #B34A4A; /* 較柔和的紅色加深 */
+}
+
+/* 空狀態 */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-state p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.empty-state .btn-main {
+    display: inline-block;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+/* 錯誤狀態 */
+.error-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: #dc3545;
+}
+
+.error-message p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* 模型預覽模態對話框樣式 - 與 product_edit_page.css 保持一致 */
+.model-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+    z-index: 1050; /* 確保在最上層 */
+    display: none; /* 預設隱藏 */
+    align-items: center;
+    justify-content: center;
+}
+
+.model-modal .modal-overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.model-modal .modal-content {
+    background-color: #FFFFFF; /* 白色背景 */
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 700px; /* 調整最大寬度 */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.model-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #CAC6BD; /* 淺灰褐色邊框 */
+    margin-bottom: 15px;
+}
+
+.model-modal .modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #979D6E; /* 橄欖綠標題 */
+}
+
+.model-modal .modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #B5A8A0; /* 暖灰褐色 */
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.7;
+}
+
+.model-modal .modal-close:hover {
+    opacity: 1;
+    color: #979D6E; /* 橄欖綠 */
+}
+
+.model-modal .modal-body {
+    margin-bottom: 20px;
+    /* 確保 modal-body 可以容納 model-viewer 和 model-info */
+    display: flex;
+    flex-direction: column;
+}
+
+.model-modal .modal-body model-viewer {
+    width: 100%;
+    height: 400px; /* 調整模型預覽高度 */
+    border-radius: 4px;
+    border: 1px solid #CAC6BD; /* 淺灰褐色邊框 */
+    margin-bottom: 15px; /* 與下方 model-info 的間距 */
+}
+
+.model-modal .modal-body .model-info {
+    font-size: 0.9rem;
+    color: #555;
+    background-color: #f9f9f9; /* 淺色背景 */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #CAC6BD; /* 淺灰褐色邊框 */
+}
+
+.model-modal .modal-body .model-info p {
+    margin: 5px 0;
+}
+
+.model-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 15px;
+    border-top: 1px solid #CAC6BD; /* 淺灰褐色邊框 */
+}
+
+/* 確保關閉按鈕樣式與 product_edit_page 一致 */
+.model-modal .modal-footer .btn-secondary {
+    background-color: #B5A8A0; /* 暖灰褐色 */
+    color: white;
+    border: 1px solid #B5A8A0;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.model-modal .modal-footer .btn-secondary:hover {
+    background-color: #A0938B; /* 暖灰褐色加深 */
+    border-color: #A0938B;
+}
+
+/* 確認刪除對話框 */
+.delete-confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+}
+
+.delete-confirm-modal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.delete-confirm-modal .modal-content {
+    background: #FFFFFF; /* 白色背景 */
+    border-radius: 8px; /* 圓角 */
+    border: 1px solid #B5A8A0; /* 暖灰褐色邊框 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* 陰影效果 */
+    max-width: 450px; /* 調整寬度 */
+    width: 100%;
+    overflow: hidden;
+}
+
+.delete-confirm-modal .modal-header {
+    padding: 15px 20px; /* 調整 padding */
+    border-bottom: 1px solid #CAC6BD; /* 淺灰褐色邊框 */
+    background-color: #F8F8F7; /* 非常淺的灰色背景 */
+}
+
+.delete-confirm-modal .modal-header h3 {
+    margin: 0;
+    color: #979D6E; /* 橄欖綠標題 */
+    font-size: 1.2rem; /* 調整字體大小 */
+}
+
+.delete-confirm-modal .modal-body {
+    padding: 20px;
+    color: #333; /* 深灰色文字 */
+    font-size: 1rem; /* 調整字體大小 */
+}
+
+.delete-confirm-modal .modal-body p {
+    margin: 0 0 10px 0;
+}
+
+.delete-confirm-modal .modal-body #deleteProductName {
+    font-weight: bold;
+    color: #979D6E; /* 橄欖綠 */
+}
+
+.delete-confirm-modal .modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #CAC6BD; /* 淺灰褐色邊框 */
+    background-color: #F8F8F7; /* 非常淺的灰色背景 */
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 統一刪除對話框按鈕樣式，使其更接近 style.css 中的 .product-links a */
+.delete-confirm-modal .modal-footer button {
+    padding: 8px 15px; /* 參考 .product-links a 的 padding */
+    font-size: 0.9rem; /* 與 .product-links a 一致 */
+    border-radius: 4px; /* 與 .product-links a 一致 */
+    text-transform: none; /* 確保文字不大寫 */
+    font-weight: normal; /* 移除加粗，除非特定按鈕需要 */
+}
+
+/* 取消按鈕 - 使用次要按鈕樣式 */
+.delete-confirm-modal .modal-footer .btn-secondary {
+    background-color: #B5A8A0; /* 暖灰褐色 */
+    color: white;
+    border: 1px solid #B5A8A0; /* 同色邊框 */
+}
+
+.delete-confirm-modal .modal-footer .btn-secondary:hover {
+    background-color: #A0938B; /* 暖灰褐色加深 */
+    border-color: #A0938B;
+}
+
+/* 確認刪除按鈕 - 使用危險按鈕樣式 */
+.delete-confirm-modal .modal-footer .btn-danger {
+    background-color: #C85C5C; /* 較柔和的紅色 */
+    color: white;
+    border: 1px solid #C85C5C; /* 同色邊框 */
+}
+
+.delete-confirm-modal .modal-footer .btn-danger:hover {
+    background-color: #B34A4A; /* 較柔和的紅色加深 */
+    border-color: #B34A4A;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .product-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .product-image {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 15px;
+    }
+    
+    .product-info {
+        padding: 0;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+    
+    .product-actions {
+        flex-direction: row;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .product-actions button {
+        flex: 1;
+    }
+    
+    .model-modal .modal-overlay,
+    .delete-confirm-modal .modal-overlay {
+        padding: 10px;
+    }
+    
+    .model-modal .modal-content,
+    .delete-confirm-modal .modal-content {
+        max-height: 95vh;
+    }
+}

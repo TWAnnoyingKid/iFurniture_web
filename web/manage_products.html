@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理商品</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/manage_products.css">
+    
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <script src="../php/config-js.php"></script>
+    <script src="../js/nav.js"></script>
+    <script src="../js/get_user_profile.js"></script>
+</head>
+<body>
+    <header>
+        <h1>管理商品</h1>
+        <nav>
+            <a href="index.html">首頁</a>
+            <div class="dropdown">
+                <button class="dropbtn">管理</button>
+                <div class="dropdown-content">
+                    <a href="#" id="manageUsersLink">管理用戶</a>
+                    <a href="#" id="manageProductsLink">管理商品</a>
+                    <a href="../web/uploadProduct_page.html" id="uploadProductLink">上傳商品</a>
+                    <a href="login.html" id="logoutLink">登出</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h2>我的商品</h2>
+                <button id="refreshBtn" class="btn-secondary">重新載入</button>
+            </div>
+            
+            <div id="loadingContainer" class="loading-container" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>載入商品中...</p>
+            </div>
+            
+            <div id="productsContainer" class="products-container">
+                <!-- 商品列表將在這裡顯示 -->
+            </div>
+            
+            <!-- 模型預覽模態對話框 -->
+            <div id="modelModal" class="model-modal" style="display: none;">
+                <div class="modal-overlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="modelModalTitle">3D 模型預覽</h3>
+                            <button type="button" class="modal-close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <model-viewer id="modalModelViewer" 
+                                          camera-controls 
+                                          auto-rotate 
+                                          shadow-intensity="1" 
+                                          shadow-softness="1"
+                                          exposure="1.5"
+                                          style="width: 100%; height: 400px;"
+                                          alt="3D 產品模型">
+                            </model-viewer>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="closeModelModal">關閉</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 刪除確認對話框 -->
+            <div id="deleteConfirmModal" class="delete-confirm-modal">
+                <div class="modal-overlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>確認刪除商品</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>您確定要刪除商品 "<span id="deleteProductName"></span>" 嗎？</p>
+                            <p>此操作無法復原。</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="cancelDeleteBtn">取消</button>
+                            <button type="button" class="btn-danger" id="confirmDeleteBtn">確認刪除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+    </footer>
+    
+    <script src="../js/manage_products.js"></script>
+</body>
+</html>

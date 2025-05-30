@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編輯商品</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/product_edit_page.css">
+    
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <script src="../php/config-js.php"></script>
+    <script src="../js/nav.js"></script>
+    <script src="../js/get_user_profile.js"></script>
+</head>
+<body>
+    <header>
+        <h1>編輯商品</h1>
+        <nav>
+            <a href="index.html">首頁</a>
+            <div class="dropdown">
+                <button class="dropbtn">管理</button>
+                <div class="dropdown-content">
+                    <a href="#" id="manageUsersLink">管理用戶</a>
+                    <a href="manage_products.html" id="manageProductsLink">管理商品</a>
+                    <a href="../web/uploadProduct_page.html" id="uploadProductLink">上傳商品</a>
+                    <a href="login.html" id="logoutLink">登出</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h2>編輯商品資訊</h2>
+                <a href="manage_products.html" class="btn-secondary">返回商品列表</a>
+            </div>
+
+            <div id="loadingContainer" class="loading-container" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>載入商品資訊中...</p>
+            </div>
+
+            <form id="editProductForm" class="edit-product-form">
+                <input type="hidden" id="productId" name="productId">
+
+                <div class="form-group">
+                    <label for="productName">商品名稱</label>
+                    <input type="text" id="productName" name="productName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productPrice">價格 (NT$)</label>
+                    <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productCategory">分類</label>
+                    <select id="productCategory" name="productCategory" required>
+                        <option value="">請選擇分類</option>
+                        <option value="chair">椅子</option>
+                        <option value="desk">桌子</option>
+                        <option value="sofa">沙發</option>
+                        <option value="bed">床具</option>
+                        <option value="cabinet">櫃子</option>
+                        <option value="decoration">裝飾品</option>
+                        <option value="lighting">燈具</option>
+                        <option value="storage">收納用品</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="productDescription">描述</label>
+                    <textarea id="productDescription" name="productDescription" rows="4"></textarea>
+                </div>
+                
+                <fieldset class="form-fieldset">
+                    <legend>尺寸 (公分)</legend>
+                    <div class="dimensions-group">
+                        <div class="form-group">
+                            <label for="dimensionWidth">寬</label>
+                            <input type="number" id="dimensionWidth" name="dimensionWidth" step="0.1" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="dimensionHeight">高</label>
+                            <input type="number" id="dimensionHeight" name="dimensionHeight" step="0.1" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="dimensionDepth">深</label>
+                            <input type="number" id="dimensionDepth" name="dimensionDepth" step="0.1" min="0">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- <div class="form-group">
+                    <label for="productStock">庫存數量</label>
+                    <input type="number" id="productStock" name="productStock" min="0" step="1">
+                </div> -->
+
+                <!-- 圖片管理和3D模型管理部分將在後續步驟中添加 -->
+                <fieldset class="form-fieldset">
+                    <legend>商品圖片</legend>
+                    <div id="currentImagesContainer" class="images-container">
+                        <!-- 當前圖片將顯示於此 -->
+                    </div>
+                    <div class="form-group">
+                        <label for="newProductImages">上傳新圖片 (可多選)</label>
+                        <input type="file" id="newProductImages" name="newProductImages[]" multiple accept="image/*">
+                    </div>
+                    <div id="newImagesPreview" class="images-preview" style="display: none;">
+                        <!-- 新上傳圖片預覽將顯示於此 -->
+                    </div>
+                </fieldset>
+                
+                <fieldset class="form-fieldset">
+                    <legend>3D 模型 (GLB/GLTF)</legend>
+                    <div id="currentModelContainer" class="model-container">
+                        <!-- 當前模型資訊將顯示於此 -->
+                    </div>
+                    <!-- 移除上傳新模型的表單元素，只允許預覽 -->
+                </fieldset>
+
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-main" id="saveChangesBtn">儲存變更</button>
+                    <a href="manage_products.html" class="btn-secondary">取消</a>
+                </div>
+            </form>
+            <div id="messageContainer" class="message-container" style="display: none;"></div>
+            
+            <!-- 模型預覽模態對話框 -->
+            <div id="modelModal" class="model-modal" style="display: none;">
+                <div class="modal-overlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="modelModalTitle">3D 模型預覽</h3>
+                            <button type="button" class="modal-close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <model-viewer id="modalModelViewer" 
+                                          camera-controls 
+                                          auto-rotate 
+                                          shadow-intensity="1" 
+                                          shadow-softness="1"
+                                          exposure="1.5"
+                                          style="width: 100%; height: 400px;"
+                                          alt="3D 產品模型">
+                            </model-viewer>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="closeModelModal">關閉</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+    </footer>
+
+    <script src="../js/product_edit_page.js"></script>
+</body>
+</html>

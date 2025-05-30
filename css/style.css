@@ -1,0 +1,320 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #CAC6BD; /* 淺灰褐色背景 */
+    color: #333;
+    margin: 0;
+    line-height: 1.6;
+    /* padding-top: 80px;  將由 JS 動態設定，或根據實際 header 高度設定一個預估值 */
+}
+
+header {
+    background-color: #B5A8A0; /* 暖灰褐色頁首背景 */
+    color: #FFFFFF;
+    padding: 0.5rem 1rem; /* 為頁首左右添加一些 padding */
+    border-bottom: 3px solid #979D6E; /* 橄欖綠邊框 */
+    position: fixed; /* 固定定位 */
+    top: 0;
+    left: 0;
+    width: 100%; /* 確保寬度充滿 */
+    z-index: 1000; /* 確保在頂層 */
+    transition: transform 0.3s ease-in-out; /* 平移過渡效果 */
+    display: flex; /* 使用 flex 佈局 */
+    justify-content: space-between; /* 兩端對齊 (標題在左，導覽在右) */
+    align-items: center; /*垂直居中 */
+    box-sizing: border-box; /* 確保 padding 不會增加總寬度 */
+}
+
+header.header-hidden {
+    transform: translateY(-100%); /* 向上平移以隱藏 */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #FFFFFF;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+}
+
+header nav a,
+header nav .dropdown .dropbtn { /* 同時選取首頁連結和下拉按鈕 */
+    color: #FFFFFF; /* 白色導覽連結文字 */
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    box-sizing: border-box; 
+    line-height: 1.4;
+}
+
+header nav a {
+    padding: 10px 0; 
+}
+
+header nav a:hover,
+header nav .dropdown:hover .dropbtn { /* 調整 hover 狀態的選取器 */
+    color: #CAC6BD; /* 滑鼠懸停時變為淺灰褐色 */
+}
+
+/* 下拉選單按鈕 */
+.dropbtn {
+    background-color: transparent; /* 與導覽列背景色一致或透明 */
+    color: white;
+    padding: 10px 15px; 
+    border: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif; /* 確保字體一致 */
+}
+
+.dropdown { 
+    position: relative;
+}
+
+/* 下拉選單容器 (隱藏) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #B5A8A0; /* 暖灰褐色背景，與header一致 */
+    min-width: auto; /* 讓寬度由內容決定，或設定一個較小的值 */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-top: 3px solid #979D6E; /* 橄欖綠上邊框 */
+    left: auto; /* 移除固定的 left:0 */
+    right: 0; /* 使下拉選單靠右對齊按鈕 */
+    padding: 5px 0; /* 為下拉選單容器上下加一點 padding */
+}
+
+/* 下拉選單中的連結 */
+.dropdown-content a {
+    color: white; /* 白色文字 */
+    padding: 8px 12px; /* 減少 padding 以縮小高寬 */
+    text-decoration: none;
+    display: block;
+    text-align: left; /* 選單項目文字靠左 */
+    font-size: 0.95rem; /* 略微調整字體大小以配合較小的 padding */
+    white-space: nowrap; /* 防止文字換行，確保寬度由文字決定 */
+}
+
+/* 滑鼠懸停在下拉選單連結上時的樣式 */
+.dropdown-content a:hover { 
+    background-color: #979D6E; /* 背景色只應用於連結本身 */
+    color: white; 
+}
+
+/* 當滑鼠懸停在下拉選單按鈕上時顯示下拉內容 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 調整下拉按鈕懸停效果 */
+.dropdown:hover .dropbtn {
+    color: #CAC6BD; /* 滑鼠懸停時變為淺灰褐色 */
+}
+
+footer p {
+    margin: 0;
+}
+
+/* 產品列表樣式 */
+#product-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 響應式網格佈局 */
+    gap: 20px;
+    padding: 20px;
+}
+
+.product-item {
+    background-color: #FFFFFF; /* 白色背景 */
+    border: 1px solid #B5A8A0; /* 暖灰褐色邊框 */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 產品圖片區域樣式 */
+.product-image-section {
+    display: flex;
+    flex-direction: column; /* 主圖在上，附圖在下 */
+    align-items: center; /* 居中對齊 */
+    margin-bottom: 15px; /* 與下方文字內容的間距 */
+}
+
+.product-item h3 {
+    color: #979D6E; /* 橄欖綠標題 */
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 1.4rem;
+}
+
+.product-main-image {
+    width: 100%;
+    max-height: 250px;
+    aspect-ratio: 1 / 1; /* 強制1:1的長寬比 */
+    object-fit: contain; 
+    border-radius: 4px;
+    margin-bottom: 10px; /* 主圖與下方附圖的間距 */
+    background-color: #f0f0f0;
+}
+
+.product-item p {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    color: #BB9A88; /* 柔和棕褐色文字 */
+}
+
+.product-item p.product-brand strong {
+    color: #333;
+}
+
+.product-price {
+    font-weight: bold;
+    color: #979D6E !important; /* 強調價格顏色 */
+    font-size: 0.9rem !important;
+    margin-bottom: 0px !important; /* 減少與下方尺寸的間距 */
+}
+
+.product-size {
+    font-size: 0.6rem !important;
+}
+
+/* 附圖庫容器與箭頭 */
+.gallery-container {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    width: 100%; 
+    margin-top: 8px; /* 主圖與附圖容器的間距 */
+}
+
+.product-image-gallery {
+    display: flex;
+    flex-wrap: nowrap; /* 強制單行 */
+    overflow-x: auto; /* 允許橫向滾動 */
+    gap: 6px; /* 調整附圖間距 */
+    justify-content: flex-start; 
+    padding: 0 2px; /* 微小邊距，避免圖片緊貼箭頭 */
+    flex-grow: 1; /* 佔據箭頭之間的剩餘空間 */
+    min-width: 0; /* 配合 flex-grow 在 flex 容器中正確處理 overflow */
+    margin: 0; /* 清除預設 margin */
+
+    /* 隱藏滾動條 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE 10+ */
+}
+.product-image-gallery::-webkit-scrollbar {
+    display: none; /* WebKit (Chrome, Safari, newer Edge) */
+}
+
+.no-gallery-images {
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    color: #888;
+    padding: 10px 0;
+}
+
+.gallery-image {
+    width: 50px; /* 附圖寬度 */
+    height: 50px; /* 附圖高度 */
+    object-fit: contain; 
+    border-radius: 4px;
+    border: 2px solid transparent; 
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.2s ease; 
+    opacity: 0.4; 
+    flex-shrink: 0; /* 防止圖片在 flex 容器中被壓縮 */
+}
+
+.gallery-image.active {
+    transform: scale(1.05); /* 稍微放大選中的縮圖 */
+    opacity: 1; /* 選中的圖片完全不透明 */
+}
+
+.gallery-image:hover {
+    transform: scale(1.1);
+    opacity: 1; 
+}
+
+/* 左右滾動箭頭樣式 */
+.gallery-scroll-arrow {
+    background-color: rgba(181, 168, 160, 0.7); /* #B5A8A0 帶透明度 */
+    color: white;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 18px; 
+    line-height: 1;
+    z-index: 5; 
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    width: 28px; 
+    height: 28px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* 防止箭頭被壓縮 */
+}
+
+.gallery-scroll-arrow:hover {
+    background-color: #979D6E; 
+}
+
+.gallery-scroll-arrow.prev-arrow {
+    margin-right: 5px; 
+}
+
+.gallery-scroll-arrow.next-arrow {
+    margin-left: 5px; 
+}
+
+.gallery-scroll-arrow.hidden {
+    opacity: 0.2;
+    pointer-events: none; /* 隱藏時不可點擊 */
+    visibility: visible; /* 保持佔位但透明，避免佈局跳動 */
+}
+
+.product-links {
+    margin-top: auto; /* 將連結推到底部 */
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.product-links a {
+    background-color: #979D6E; /* 橄欖綠按鈕 */
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-align: center;
+    flex-grow: 1; /* 讓連結平均分配空間 */
+    transition: background-color 0.3s ease;
+}
+
+.product-links a:hover {
+    background-color: #808A56; /* 橄欖綠加深 */
+}
+
+/* 登入按鈕樣式 */
+.login-btn {
+    background-color: #979D6E; /* 橄欖綠色背景 */
+    color: white !important; /* 確保文字為白色 */
+    padding: 8px 15px !important; /* 調整內邊距使其看起來像按鈕 */
+    border-radius: 4px; /* 圓角邊框 */
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #858C61; /* 滑鼠懸停時變暗 */
+    color: white !important;
+}

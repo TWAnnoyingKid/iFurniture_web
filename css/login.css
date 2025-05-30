@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #CAC6BD; /* 淺灰褐色背景 */
+    margin: 0;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    background-color: #FFFFFF; /* 白色容器背景，與淺灰褐色背景形成對比 */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    border: 1px solid #B5A8A0; /* 暖灰褐色邊框 */
+    margin: auto; /* 讓容器在頁面中央 */
+}
+
+h2 {
+    text-align: center;
+    color: #979D6E; /* 橄欖綠標題 */
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #BB9A88; /* 柔和棕褐色文字 */
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #B5A8A0; /* 暖灰褐色邊框 */
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn {
+    background-color: #979D6E; /* 橄欖綠按鈕 */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #808A56; /* 橄欖綠加深 */
+}
+
+.links {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.links a {
+    color: #BB9A88; /* 柔和棕褐色連結 */
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 14px;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #979D6E; /* 與按鈕顏色相同的橄欖綠 */
+}
+
+.password-toggle:hover {
+    color: #808A56; /* 橄欖綠加深，與按鈕懸停顏色相同 */
+}
+
+/* 新增：配合導航欄的樣式 */
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px; /* 為導航欄預留空間 */
+} 

@@ -1,0 +1,561 @@
+/* uploadProduct_page.css */
+/* 沿用 style.css 中的 header, footer, main padding-top (如果 JS 已處理好) */
+
+/* 確保頁面可以正常滾動 */
+html, body {
+    overflow-x: hidden; /* 防止水平滾動條 */
+    overflow-y: auto; /* 允許垂直滾動 */
+}
+
+/* 主要內容容器 - 左右布局 */
+.main-content-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    min-height: calc(100vh - 200px); /* 減去 header 和 footer 的估計高度 */
+}
+
+/* 左側上傳表單區域 */
+.upload-form-section {
+    flex: 1;
+    min-width: 400px;
+    background-color: #FFFFFF;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+/* 右側結果顯示區域 */
+.results-section {
+    flex: 1;
+    min-width: 400px;
+    background-color: #FFFFFF;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: fit-content;
+    overflow: visible;
+}
+
+.upload-form-section h2, .results-section h2 {
+    color: #979D6E; /* 橄欖綠標題 */
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #BB9A88; /* 柔和棕褐色文字 */
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    width: calc(100% - 22px); /* 考慮 padding 和 border */
+    padding: 10px;
+    border: 1px solid #B5A8A0; /* 暖灰褐色邊框 */
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group input[type="file"] {
+    cursor: pointer;
+}
+
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px dashed #B5A8A0;
+    border-radius: 4px;
+    min-height: 80px; /* 至少有一點高度 */
+    align-items: center;
+    justify-content: flex-start;
+    max-height: 300px; /* 限制最大高度 */
+    overflow-y: auto; /* 如果圖片太多，允許滾動 */
+}
+
+.preview-image-item {
+    position: relative;
+    width: 80px; /* 稍微縮小預覽圖片 */
+    height: 80px;
+    border: 1px solid #CAC6BD;
+    border-radius: 4px;
+    overflow: hidden; /* 裁剪超出部分的圖片 */
+    flex-shrink: 0; /* 防止圖片被壓縮 */
+}
+
+.preview-image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 填滿容器，可能會裁剪 */
+}
+
+.remove-preview-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px; /* 稍微縮小按鈕 */
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#uploadForm .btn-main {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+}
+
+/* 修復處理結果區域的樣式 - 移除不必要的空白 */
+.processed-results {
+    /* 當顯示模型時隱藏這個區域 */
+    margin: 0; /* 移除 margin */
+    min-height: 0; /* 移除最小高度 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+/* 當處理結果區域為空時完全隱藏 */
+.processed-results:empty {
+    display: none;
+}
+
+/* 當只包含 loading 或 no-results 時的樣式 */
+.processed-results .loading-indicator,
+.processed-results .no-results {
+    margin: 0;
+    padding: 20px 0;
+}
+
+.processed-image-item {
+    border: 1px solid #B5A8A0;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+}
+
+.processed-image-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* 保持1:1 */
+    object-fit: contain;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background-color: #e9e9e9;
+}
+
+.processed-image-item p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #333;
+    text-align: center;
+}
+
+.no-results {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 20px 0;
+    margin: 0; /* 移除額外的 margin */
+}
+
+/* 3D模型顯示區樣式 */
+.model-viewer-container {
+    border: 1px solid #CAC6BD;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    overflow: visible;
+    margin-top: 0; /* 確保沒有額外的上邊距 */
+}
+
+.model-viewer-container h3 {
+    color: #979D6E;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* 修復 model-viewer 的滾動問題 */
+model-viewer {
+    width: 100%;
+    height: 400px;
+    background-color: #f5f5f5;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    touch-action: pan-x pan-y; /* 允許觸摸滾動 */
+    pointer-events: auto;
+}
+
+.model-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.model-actions button {
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+
+/* 上傳商品按鈕樣式 */
+#uploadProductBtn {
+    background-color: #979D6E; /* 橄欖綠 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#uploadProductBtn:hover {
+    background-color: #878c62; /* 稍深的橄欖綠 */
+}
+
+/* 處理中的加載動畫 */
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.loading-indicator::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #979D6E;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* **【新增】** 商品資訊輸入對話框樣式 */
+.product-info-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-header {
+    padding: 20px 25px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #979D6E;
+    font-size: 1.3rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #888;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.modal-close:hover {
+    background-color: #f0f0f0;
+}
+
+.modal-body {
+    padding: 20px 25px;
+}
+
+.modal-footer {
+    padding: 15px 25px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 表單行布局 */
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* 尺寸輸入區域 */
+.size-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.size-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.size-input-group label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #666;
+    font-weight: normal;
+}
+
+.size-input-group input {
+    width: 100%;
+    text-align: center;
+}
+
+/* 對話框內的表單樣式 */
+.modal-body .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.modal-body .form-group input,
+.modal-body .form-group select,
+.modal-body .form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+
+.modal-body .form-group input:focus,
+.modal-body .form-group select:focus,
+.modal-body .form-group textarea:focus {
+    outline: none;
+    border-color: #979D6E;
+    box-shadow: 0 0 0 2px rgba(151, 157, 110, 0.2);
+}
+
+.modal-body .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* 對話框內的圖片預覽 */
+.modal-image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.modal-preview-item {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.modal-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-preview-item .remove-preview-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 按鈕樣式 */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.modal-footer .btn-main {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+}
+
+/* 響應式設計 - 平板設備 */
+@media (max-width: 1024px) {
+    .main-content-container {
+        gap: 15px;
+    }
+    
+    .upload-form-section,
+    .results-section {
+        min-width: 350px;
+    }
+    
+    model-viewer {
+        height: 350px;
+    }
+}
+
+/* 響應式設計 - 手機設備 */
+@media (max-width: 768px) {
+    .main-content-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .upload-form-section,
+    .results-section {
+        min-width: unset;
+        width: 100%;
+        position: static;
+    }
+    
+    .upload-form-section {
+        margin-bottom: 0;
+    }
+    
+    .image-preview-container {
+        max-height: 200px;
+    }
+    
+    .preview-image-item {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .remove-preview-btn {
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        line-height: 16px;
+    }
+    
+    model-viewer {
+        height: 300px;
+    }
+}
+
+/* 響應式設計 - 小屏手機 */
+@media (max-width: 480px) {
+    .upload-form-section,
+    .results-section {
+        padding: 15px;
+    }
+    
+    .preview-image-item {
+        width: 50px;
+        height: 50px;
+    }
+    
+    model-viewer {
+        height: 250px;
+    }
+    
+    #uploadForm .btn-main,
+    #uploadProductBtn {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
