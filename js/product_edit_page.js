@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingContainer.style.display = 'block';
         editProductForm.style.display = 'none';
         try {
-            const response = await fetch(`../php/get_product_details.php?id=${productId}`, {
+            const response = await fetch(`../php/products.php?action=get_details&id=${productId}`, {
                 method: 'GET',
                 credentials: 'same-origin'
             });

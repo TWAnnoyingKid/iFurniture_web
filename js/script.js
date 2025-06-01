@@ -3,11 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 載入並顯示產品資料
     loadProducts();
-
-    // 自動隱藏/顯示導覽列的邏輯
-    initScrollBehavior();
-
-    console.log('主頁面 JavaScript 已載入。');
+    
+    // 滾動行為邏輯已移至 nav.js，此處不再處理
 });
 
 /**
@@ -22,7 +19,7 @@ async function loadProducts() {
 
     try {
         // 從MongoDB公開API載入產品資料
-        const response = await fetch('../php/get_products.php', {
+        const response = await fetch('../php/products.php?action=get_list', {
             method: 'GET',
             cache: 'no-cache'
         });
@@ -153,9 +150,7 @@ async function loadProducts() {
     }
 }
 
-/**
- * 設置產品圖片庫的交互功能
- */
+// 產品圖片庫邏輯保留在這裡，因為是產品專用的功能
 function setupProductGallery(productItem) {
     const mainImageElement = productItem.querySelector('.product-main-image');
     const galleryImages = productItem.querySelectorAll('.gallery-image');
@@ -214,53 +209,6 @@ function setupProductGallery(productItem) {
 
         galleryScrollContainer.addEventListener('scroll', updateGalleryArrows);
         setTimeout(updateGalleryArrows, 500); 
-    }
-}
-
-/**
- * 初始化頁面滾動行為
- */
-function initScrollBehavior() {
-    const header = document.querySelector('header');
-    let lastScrollTop = 0;
-    const scrollThreshold = 5; // 滾動超過5px才觸發判斷，防止抖動
-    let headerHeight = 0;
-
-    function setHeaderHeight() {
-        if (header) {
-            headerHeight = header.offsetHeight;
-            // 設定 main 內容的上邊距以避免被固定頁首遮擋
-            const mainContent = document.querySelector('main'); 
-            if (mainContent) {
-                mainContent.style.paddingTop = headerHeight + 'px';
-            }
-        }
-    }
-
-    // 初始設定高度和padding
-    setHeaderHeight();
-    // 當視窗大小改變時重新計算 (例如旋轉設備)
-    window.addEventListener('resize', setHeaderHeight);
-
-    if (header) {
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            // 判斷滾動方向
-            if (Math.abs(scrollTop - lastScrollTop) <= scrollThreshold) {
-                return; // 如果滾動幅度太小，則不處理
-            }
-
-            if (scrollTop > lastScrollTop && scrollTop > headerHeight) {
-                // 向下滾動且滾動距離超過頁首高度
-                header.classList.add('header-hidden');
-            } else {
-                // 向上滾動或滾動距離未超過頁首高度（或已到頂部附近）
-                header.classList.remove('header-hidden');
-            }
-            
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // 處理 iOS 上的 overscroll
-        }, false);
     }
 }
 

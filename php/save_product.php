@@ -12,20 +12,10 @@ error_log("FILES資料: " . print_r($_FILES, true));
 
 // 引入配置文件
 require_once 'config.php';
+require_once 'auth_helper.php';
 
-// 檢查用戶是否已登入
-if (!isset($_SESSION["login"]) || $_SESSION["login"] !== true) {
-    echo json_encode(["success" => false, "message" => "用戶未登入"]);
-    exit;
-}
-
-// 獲取登入的用戶名
-$username = isset($_SESSION["username"]) ? $_SESSION["username"] : "";
-
-if (empty($username)) {
-    echo json_encode(["success" => false, "message" => "無法獲取用戶名"]);
-    exit;
-}
+// 檢查用戶是否已登入，使用輔助函數自動恢復登入狀態
+$username = requireLogin(true);
 
 // 檢查是否為 POST 請求
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -62,16 +52,16 @@ try {
     $collectionSuffix = preg_replace('/[^a-zA-Z0-9_\x{4e00}-\x{9fff}]/u', '_', $userCompany);
     $collectionName = $collectionSuffix . "_product";
 
-    // **【修改部分】第二步：從前端獲取產品資訊和資料夾結構**
+    // 從前端獲取產品資訊和資料夾結構**
     $productName = $_POST['name'] ?? '';
-    $productId = $_POST['product_id'] ?? '';  // **【新增】從前端獲取產品序號**
-    $productFolder = $_POST['product_folder'] ?? '';  // **【新增】從前端獲取資料夾名稱**
+    $productId = $_POST['product_id'] ?? '';  // 從前端獲取產品序號
+    $productFolder = $_POST['product_folder'] ?? '';  // 從前端獲取資料夾名稱
     
     if (empty($productName)) {
         throw new Exception("商品名稱為必填欄位");
     }
     
-    // **【修改】如果沒有提供產品資訊，則生成新的（向後兼容）**
+    // 如果沒有提供產品資訊，則生成新的
     if (empty($productId)) {
         $productId = uniqid();
         $cleanProductName = preg_replace('/[^a-zA-Z0-9_\x{4e00}-\x{9fff}]/u', '_', $productName);
@@ -100,7 +90,7 @@ try {
         mkdir($modelDir, 0755, true);
     }
 
-    // **【修改部分】第三步：使用 GridFS 處理商品圖片**
+    // 使用 GridFS 處理商品圖片
     $uploadedImageIds = [];
     
     if (isset($_FILES['images']) && !empty($_FILES['images']['name'][0])) {
@@ -211,7 +201,7 @@ try {
         }
     }
 
-    // **【修改部分】第四步：使用 GridFS 處理 3D 模型檔案**
+    // 使用 GridFS 處理 3D 模型檔案
     $modelUrl = $_POST['model_url'] ?? '';
     $modelFileId = null;
     
@@ -315,7 +305,7 @@ try {
         }
     }
 
-    // **第五步：準備商品資料**
+    // 準備商品資料
     $productData = [
         'product_id' => $productId, // 唯一產品序號
         'name' => $productName,
@@ -347,7 +337,7 @@ try {
         throw new Exception("商品價格必須大於 0");
     }
 
-    // **第六步：將商品資料插入到 MongoDB**
+    // 將商品資料插入到 MongoDB**
     $bulk = new MongoDB\Driver\BulkWrite;
     $insertedId = $bulk->insert($productData);
     
@@ -361,7 +351,7 @@ try {
         // 構建模型URL，指向GridFS文件服務
         $modelUrl = '';
         if ($modelFileId) {
-            $modelUrl = '../php/get_model_file.php?file_id=' . (string)$modelFileId;
+            $modelUrl = '../php/gridfs_file.php?file_id=' . (string)$modelFileId;
         }
         
         // 成功插入，返回成功回應

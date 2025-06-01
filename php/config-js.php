@@ -40,8 +40,6 @@ const CONFIG = {
         maxFiles: 20
     },
     
-    // 調試信息
-    debug: <?= config('settings.debug') ? 'true' : 'false' ?>,
     
     // 系統信息
     system: {

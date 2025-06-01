@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('password', password);
             
             // 發送登入請求到後端
-            fetch('../php/login.php', {
+            fetch('../php/auth.php?action=login', {
                 method: 'POST',
                 body: formData
             })

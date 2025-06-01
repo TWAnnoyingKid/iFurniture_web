@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingContainer.style.display = 'block';
             productsContainer.innerHTML = '';
 
-            const response = await fetch('../php/get_products.php', {
+            const response = await fetch('../php/products.php?action=get_my_list', {
                 method: 'GET',
                 credentials: 'same-origin'
             });
@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (CONFIG.debug) {
                     console.log(`載入了 ${result.products.length} 個商品`, {
+                        username: result.username,
                         company: result.company,
                         collection: result.collection
                     });

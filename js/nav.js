@@ -1,9 +1,3 @@
-/**
- * nav.js - 導航欄處理邏輯
- * 處理所有頁面通用的導航欄顯示邏輯，包括登入狀態檢查及用戶資料獲取
- * 此檔案應該在所有需要共享導航欄邏輯的頁面中導入
- */
-
 // 確保在 DOM 加載完成後執行
 document.addEventListener('DOMContentLoaded', function() {
     // 初始化導航欄
@@ -11,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 綁定導航欄中各按鈕的事件處理
     bindNavEvents();
+    
+    // 初始化頁面滾動行為
+    initScrollBehavior();
 });
 
 /**
@@ -24,8 +21,8 @@ async function initNavBar() {
         
         // 使用動態或靜態的 API 路徑          
         const checkLoginUrl = apiBaseUrl ? 
-                             `${apiBaseUrl}/php/check_login.php` : 
-                             '../php/check_login.php';
+                             `${apiBaseUrl}/php/auth.php?action=check_login` : 
+                             '../php/auth.php?action=check_login';
                              
         // 檢查登入狀態
         const response = await fetch(checkLoginUrl);
@@ -45,12 +42,11 @@ async function initNavBar() {
                 const dropdownBtn = dropdownDiv.querySelector('.dropbtn');
                 if (dropdownBtn) dropdownBtn.textContent = '管理';
                 
-                // 確保登出連結正確指向 PHP 登出處理
                 const logoutLink = document.getElementById('logoutLink');
                 if (logoutLink) {
                     const logoutUrl = apiBaseUrl ? 
-                                     `${apiBaseUrl}/php/logout.php` : 
-                                     '../php/logout.php';
+                                     `${apiBaseUrl}/php/auth.php?action=logout` : 
+                                     '../php/auth.php?action=logout';
                     logoutLink.setAttribute('href', logoutUrl);
                     
                     // 移除之前可能的事件監聽器
@@ -88,9 +84,7 @@ async function initNavBar() {
     }
 }
 
-/**
- * 處理導航欄初始化錯誤 - 顯示登入按鈕作為後備
- */
+// 處理導航欄初始化錯誤 - 顯示登入按鈕作為後備
 function handleNavError() {
     const nav = document.querySelector('nav');
     const dropdownDiv = document.querySelector('.dropdown');
@@ -114,9 +108,7 @@ function handleNavError() {
     }
 }
 
-/**
- * 從 MongoDB 獲取用戶資料
- */
+// 從 MongoDB 獲取用戶資料
 async function getUserProfileFromMongoDB() {
     try {
         // 從配置文件獲取 API URL，如果有的話
@@ -125,8 +117,8 @@ async function getUserProfileFromMongoDB() {
                           
         // 使用動態或靜態的 API 路徑                  
         const profileUrl = apiBaseUrl ? 
-                          `${apiBaseUrl}/php/get_user_profile.php` : 
-                          '../php/get_user_profile.php';
+                          `${apiBaseUrl}/php/auth.php?action=get_profile` : 
+                          '../php/auth.php?action=get_profile';
         
         const response = await fetch(profileUrl);
         if (!response.ok) {
@@ -155,9 +147,7 @@ async function getUserProfileFromMongoDB() {
     }
 }
 
-/**
- * 根據用戶資料更新 UI 元素
- */
+// 根據用戶資料更新 UI 元素
 function updateUIWithUserData(userData) {
     // 可以根據用戶角色顯示/隱藏某些元素
     if (userData && userData.role === 'admin') {
@@ -173,9 +163,7 @@ function updateUIWithUserData(userData) {
     });
 }
 
-/**
- * 綁定導航欄中各按鈕的事件處理
- */
+// 綁定導航欄中各按鈕的事件處理
 function bindNavEvents() {
     // 登出按鈕處理
     const logoutLink = document.getElementById('logoutLink');
@@ -197,8 +185,8 @@ function bindNavEvents() {
                                  
                 // 使用動態或靜態的 API 路徑                
                 const logoutUrl = apiBaseUrl ? 
-                                `${apiBaseUrl}/php/logout.php` : 
-                                '../php/logout.php';
+                                `${apiBaseUrl}/php/auth.php?action=logout` : 
+                                '../php/auth.php?action=logout';
                 
                 const response = await fetch(logoutUrl);
                 if (!response.ok) {
@@ -228,5 +216,50 @@ function bindNavEvents() {
             event.preventDefault();
             alert('「管理用戶」功能尚未實作！');
         });
+    }
+}
+
+// 初始化頁面滾動行為 - 控制導航欄的顯示和隱藏
+function initScrollBehavior() {
+    const header = document.querySelector('header');
+    let lastScrollTop = 0;
+    const scrollThreshold = 5; // 滾動超過5px才觸發判斷，防止抖動
+    let headerHeight = 0;
+
+    function setHeaderHeight() {
+        if (header) {
+            headerHeight = header.offsetHeight;
+            // 設定 main 內容的上邊距以避免被固定頁首遮擋
+            const mainContent = document.querySelector('main'); 
+            if (mainContent) {
+                mainContent.style.paddingTop = headerHeight + 'px';
+            }
+        }
+    }
+
+    // 初始設定高度和padding
+    setHeaderHeight();
+    // 當視窗大小改變時重新計算 (例如旋轉設備)
+    window.addEventListener('resize', setHeaderHeight);
+
+    if (header) {
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // 判斷滾動方向
+            if (Math.abs(scrollTop - lastScrollTop) <= scrollThreshold) {
+                return; // 如果滾動幅度太小，則不處理
+            }
+
+            if (scrollTop > lastScrollTop && scrollTop > headerHeight) {
+                // 向下滾動且滾動距離超過頁首高度
+                header.classList.add('header-hidden');
+            } else {
+                // 向上滾動或滾動距離未超過頁首高度（或已到頂部附近）
+                header.classList.remove('header-hidden');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // 處理 iOS 上的 overscroll
+        }, false);
     }
 }

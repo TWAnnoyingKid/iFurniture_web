@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const loadingDiv = document.createElement('div');
         loadingDiv.classList.add('loading-indicator');
         processedResultsContainer.innerHTML = '';
+        processedResultsContainer.style.display = 'flex'; // 確保容器可見
         processedResultsContainer.appendChild(loadingDiv);
         
         // 隱藏模型查看器

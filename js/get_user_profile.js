@@ -2,10 +2,10 @@
  * 獲取用戶檔案資訊
  * @returns {Promise<Object|null>} 用戶檔案資料或 null
  */
- async function getUserProfile() {
+async function getUserProfile() {
     try {
         // 首先檢查登入狀態
-        const loginResponse = await fetch('../php/check_login.php', {
+        const loginResponse = await fetch('../php/auth.php?action=check_login', {
             method: 'GET',
             credentials: 'same-origin' // 確保傳送 session cookies
         });
@@ -23,7 +23,7 @@
             return null;
         }
         // 獲取用戶檔案資訊
-        const profileResponse = await fetch('../php/get_user_profile.php', {
+        const profileResponse = await fetch('../php/auth.php?action=get_profile', {
             method: 'GET',
             credentials: 'same-origin' // 確保傳送 session cookies
         });
@@ -37,6 +37,9 @@
         
         // 檢查 API 回應是否成功
         if (profileData.success) {
+            // 印出公司名稱
+            const companyName = profileData.user?.company || '未設定公司';
+            console.log('用戶公司名稱:', companyName);
             
             return profileData.user;
         } else {
@@ -54,7 +57,7 @@
  * 初始化用戶檔案模組
  * 在頁面載入完成後自動執行
  */
-function initUserProfile() {
+async function initUserProfile() {
     // 檢查是否在適當的頁面（非登入頁面）
     if (window.location.pathname.includes('login.html')) {
         console.log('當前在登入頁面，跳過用戶檔案獲取');
@@ -63,10 +66,22 @@ function initUserProfile() {
     
     // 等待 DOM 載入完成後執行
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', getUserProfile);
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userProfile = await getUserProfile();
+            if (userProfile) {
+                console.log('用戶檔案初始化完成');
+            } else {
+                console.log('用戶檔案初始化失敗或用戶未登入');
+            }
+        });
     } else {
         // DOM 已經載入完成，直接執行
-        getUserProfile();
+        const userProfile = await getUserProfile();
+        if (userProfile) {
+            console.log('用戶檔案初始化完成');
+        } else {
+            console.log('用戶檔案初始化失敗或用戶未登入');
+        }
     }
 }
 
